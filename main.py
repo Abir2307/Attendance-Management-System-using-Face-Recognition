@@ -7,6 +7,8 @@ import time
 import mysql.connector
 import datetime
 from PIL import Image
+from tkinter import messagebox
+from tkinter.simpledialog import askstring
 
 # Database connection
 def get_db_connection():
@@ -97,6 +99,14 @@ entry3.pack(pady=10)
 # Create a clear button
 clear_button = Button(frame, text="Clear", command=lambda: clear_entry(entry3), bg="black", fg="white", font=("Courier", 15))
 
+# Add a confirmation dialog when closing the window
+def on_closing():
+    if messagebox.askyesno("Exit", "Are you sure you want to exit?"):
+        window.destroy()
+
+# Bind the close protocol to the confirmation function
+window.protocol("WM_DELETE_WINDOW", on_closing)
+
 def manually_fill(attendance_records):
     global sb
     sb = Toplevel(window)
@@ -119,13 +129,72 @@ def manually_fill(attendance_records):
             Label(frame, text="Attendance recorded successfully!", bg="green", font=("Courier", 15)).pack()
             sb.destroy()
     Button(sb, text="Submit", command=submit_subject, bg="blue", fg="white", font=("Courier", 15)).pack(pady=10)
+
+# Check if password is already set
+def is_password_set(student_id):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        query = "SELECT admin_password FROM student_details WHERE id = %s"
+        cursor.execute(query, (student_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return result[0] if result else None  # Return password if found
+    except mysql.connector.Error as err:
+        print(f"Error fetching password: {err}")
+        return None
+
+# Save password in the database
+def set_password(student_id, password):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        query = "UPDATE student_details SET admin_password = %s WHERE id = %s"
+        cursor.execute(query, (password, student_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except mysql.connector.Error as err:
+        print(f"Error setting password: {err}")
+
 # Capture Image
 def take_img():
     # Get Inputs
     Id = entry.get()
     name = entry2.get()
     email = entry3.get()
+
+    # Check if password is set
+    stored_password = is_password_set(Id)
     
+    if not stored_password:  # If password is not set, ask to set one
+        password = askstring("Set Password", "Enter a password to set:", show='*')
+        if password:
+            set_password(Id, password)
+            label = Label(frame, text="Password set successfully. Now you can capture an image.", bg='green')
+            label.config(font=("Courier", 15))
+            label.pack(pady=10)
+            return  # End function after setting password
+        else:
+            label = Label(frame, text="Password cannot be empty.", bg='red')
+            label.config(font=("Courier", 15))
+            label.pack(pady=10)
+            return
+
+    # If password is already set, validate it
+    entered_password = askstring("Password", "Enter your password to continue:", show='*')
+    if entered_password != stored_password:
+        label = Label(frame, text="Invalid password. Access denied!", bg='red')
+        label.config(font=("Courier", 15))
+        label.pack(pady=10)
+        return
+
+    # If password is correct, continue with the image capture logic
+    label = Label(frame, text="Password validated. Access granted.", bg='green')
+    label.config(font=("Courier", 15))
+    label.pack(pady=10)
+
     # Input Validation
     if Id.isnumeric():
         try:
