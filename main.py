@@ -107,6 +107,7 @@ def on_closing():
 # Bind the close protocol to the confirmation function
 window.protocol("WM_DELETE_WINDOW", on_closing)
 
+# Manually fill attendance records
 def manually_fill(attendance_records):
     global sb
     sb = Toplevel(window)
@@ -122,7 +123,7 @@ def manually_fill(attendance_records):
     def submit_subject():
         subject = sub_entry.get()
         if subject == '':
-            Label(sb, text="Please enter a subject!", bg="red", font=("Courier", 15)).pack()
+            Label(sb, text="Please enter a subject!", bg="red", font=("Courier", 15)).pack(pady=10)
         else:
             for record in attendance_records:
                 save_attendance(record["ID"], record["Name"], record["Time"], subject)
