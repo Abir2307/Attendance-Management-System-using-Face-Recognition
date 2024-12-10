@@ -1,15 +1,15 @@
-Overview
+Overview:
 The Face Recognition Attendance System is an automated solution for recording attendance using facial recognition technology. 
 It leverages computer vision and machine learning techniques to detect and recognize faces, ensuring an efficient and contactless way to track attendance.
 
-Features
+Features:
 Real-time Face Detection: Detects faces from a live webcam feed.
 Face Recognition: Matches detected faces against a pre-registered database.
 Attendance Logging: Automatically records attendance with timestamps in the database.
 Database Management: Handles student details and attendance records efficiently.
 User-Friendly Interface: Simplified GUI for interaction and management.
 
-Technologies Used
+Technologies Used-
 Programming Language:
 Python
 Libraries & Frameworks:
