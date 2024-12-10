@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2024 at 09:57 AM
+-- Generation Time: Dec 10, 2024 at 07:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -34,6 +34,14 @@ CREATE TABLE `attendance` (
   `subject` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `name`, `timestamp`, `subject`) VALUES
+(54, 'Abir Saha', '2024-12-10 19:58:56', 'AI'),
+(54, 'Abir Saha', '2024-12-10 19:58:56', 'AI'),
+(54, 'Abir Saha', '2024-12-10 19:58:56', 'AI');
 
 -- --------------------------------------------------------
 
@@ -46,8 +54,18 @@ CREATE TABLE `student_details` (
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `date` date NOT NULL,
-  `time` time NOT NULL
+  `time` time NOT NULL,
+  `admin_password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `student_details`
+--
+
+INSERT INTO `student_details` (`id`, `name`, `email`, `date`, `time`, `admin_password`) VALUES
+(53, 'Lipi Saha', 'lipisaha2506@gmail.com', '2024-12-10', '13:21:58', NULL),
+(54, 'Abir Saha', 'abirsaha548@gmail.com', '2024-12-10', '19:51:06', 'Abir@2331'),
+(56, 'Ashis Saha', 'ashissaha2812@gmail.com', '2024-12-10', '13:43:27', NULL);
 
 --
 -- Indexes for dumped tables
